@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 #include <boost/asio.hpp>
 
@@ -20,6 +21,7 @@ void write_socket(std::size_t  length);
 
 
 void write_socket(std::size_t  length) {
+    std::cout.write(data, length);
     asio::async_write(tcp_socket, asio::buffer(data, length),
                       [](boost::system::error_code ec, std::size_t /* length */){
         if (!ec) {
@@ -42,6 +44,7 @@ int main() {
     tcp_acceptor.listen();
     tcp_acceptor.async_accept(tcp_socket, [](const boost::system::error_code &ec) {
         if (!ec) {
+            std::cout << tcp_socket.native_handle() << std::endl;
             read_socket();
         }
     });

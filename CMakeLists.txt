@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(testasio)
+project(echoserver)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
