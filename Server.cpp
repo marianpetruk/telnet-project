@@ -1,18 +1,25 @@
 #include <iostream>
 #include "boost/asio.hpp"
 #include "boost/bind.hpp"
+#include <sstream>
+
+#include "execute.h"
 
 
 namespace asio = boost::asio;
 namespace ip = boost::asio::ip;
 
 
-std::string delim = "\r\n";
+std::string delim = "</bbp>";
 
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
     Session(asio::io_service &io_service): tcp_socket(io_service) {};
+
+    ~Session() {
+        std::cout << "Closed session with socket: " << tcp_socket.native_handle() << std::endl;
+    }
 
     void start() {
         std::cout << "Started session with socket: " << tcp_socket.native_handle() << std::endl;
@@ -38,11 +45,18 @@ private:
 
     void write_socket(std::size_t  length) {
         auto self(shared_from_this());  // using self to prevent delete in lambda function
-        char received_data[length];
-        data.sgetn(received_data, length);
-        std::cout.write(received_data, length);
+
+        std::string command(asio::buffers_begin(data.data()), asio::buffers_begin(data.data()) + length - delim.size());
+        data.consume(length);
+
+        std::istringstream iss(command);
+        std::vector<std::string> argv(
+                std::istream_iterator<std::string>{iss},
+                std::istream_iterator<std::string>());
+        execute(argv, tcp_socket.native_handle());
+
         asio::async_write(
-                tcp_socket, asio::buffer(received_data, length),
+                tcp_socket, asio::buffer(delim),
                 [this, self](boost::system::error_code ec, std::size_t /* length */){
                     if (!ec) {
                         read_socket();
@@ -53,8 +67,8 @@ private:
 
 class Server {
 public:
-    Server(asio::io_service &io_service):
-            tcp_acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), 2014)) {
+    Server(asio::io_service &io_service, int port):
+            tcp_acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), port)) {
         start_accept();
     }
 
@@ -82,6 +96,6 @@ private:
 
 int main() {
     asio::io_service io_service;
-    Server server(io_service);
+    Server server(io_service, 2014);
     io_service.run();
 }

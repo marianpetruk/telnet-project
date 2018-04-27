@@ -10,18 +10,19 @@ io_service ioservice;
 tcp::resolver resolv{ioservice};
 tcp::socket tcp_socket{ioservice};
 streambuf data;
-std::string delim = "\r\n";
+std::string delim = "</bbp>";
 
 
 void connect_handler(const boost::system::error_code &ec);
 
 void read_handler(const boost::system::error_code &ec,
-                  std::size_t bytes_transferred) {
+                  std::size_t length) {
     if (!ec)
     {
-        char received_data[bytes_transferred];
-        data.sgetn(received_data, bytes_transferred);
-        std::cout.write(received_data, bytes_transferred);
+        std::string response(buffers_begin(data.data()), buffers_begin(data.data()) + length - delim.size());
+        data.consume(length);
+
+        std::cout << response << std::endl;
         connect_handler(ec);
     }
 }

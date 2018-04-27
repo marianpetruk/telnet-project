@@ -10,7 +10,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_executable(echoserver Server.cpp)
+add_executable(echoserver Server.cpp execute.cpp execute.h)
 target_include_directories(echoserver PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(echoserver ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
