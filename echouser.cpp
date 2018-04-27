@@ -1,7 +1,4 @@
-#include <boost/asio/io_service.hpp>
-#include <boost/asio/write.hpp>
-#include <boost/asio/buffer.hpp>
-#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio.hpp>
 #include <array>
 #include <string>
 #include <iostream>
@@ -12,38 +9,45 @@ using namespace boost::asio::ip;
 io_service ioservice;
 tcp::resolver resolv{ioservice};
 tcp::socket tcp_socket{ioservice};
-std::array<char, 4096> bytes;
+streambuf data;
+std::string delim = "\r\n";
+
+
+void connect_handler(const boost::system::error_code &ec);
 
 void read_handler(const boost::system::error_code &ec,
-                  std::size_t bytes_transferred)
-{
+                  std::size_t bytes_transferred) {
     if (!ec)
     {
-        std::cout.write(bytes.data(), bytes_transferred);
-        tcp_socket.async_read_some(buffer(bytes), read_handler);
+        char received_data[bytes_transferred];
+        data.sgetn(received_data, bytes_transferred);
+        std::cout.write(received_data, bytes_transferred);
+        connect_handler(ec);
     }
 }
 
-void connect_handler(const boost::system::error_code &ec)
-{
+void write_handler(const boost::system::error_code &ec,
+                  std::size_t bytes_transferred) {
+    async_read_until(tcp_socket, data, delim, read_handler);
+}
+
+void connect_handler(const boost::system::error_code &ec) {
     if (!ec)
     {
-        std::string r =
-                "123\r\nHost: localhost\r\n\r\n";
-        write(tcp_socket, buffer(r));
-        tcp_socket.async_read_some(buffer(bytes), read_handler);
+        std::string r;
+        std::getline(std::cin, r);
+        r += delim;
+        async_write(tcp_socket, buffer(r), write_handler);
     }
 }
 
 void resolve_handler(const boost::system::error_code &ec,
-                     tcp::resolver::iterator it)
-{
+                     tcp::resolver::iterator it) {
     if (!ec)
         tcp_socket.async_connect(*it, connect_handler);
 }
 
-int main()
-{
+int main() {
     tcp::resolver::query q{"localhost", "2014"};
     resolv.async_resolve(q, resolve_handler);
     ioservice.run();
