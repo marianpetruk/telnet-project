@@ -2,6 +2,7 @@
 #include "boost/asio.hpp"
 #include "boost/bind.hpp"
 #include <sstream>
+#include <ctime>
 
 #include "execute.h"
 
@@ -49,6 +50,7 @@ private:
         std::string command(asio::buffers_begin(data.data()), asio::buffers_begin(data.data()) + length - delim.size());
         data.consume(length);
 
+        std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
         std::istringstream iss(command);
         std::vector<std::string> argv(
                 std::istream_iterator<std::string>{iss},
