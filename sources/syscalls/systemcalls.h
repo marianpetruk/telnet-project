@@ -10,7 +10,7 @@
 #include "systemcallerror.h"
 
 namespace syscalls {
-    int execute(const std::vector<std::string> &argv, const std::vector<std::string> &envp);
+    int execute(const std::vector<std::string> &argv, const std::vector<std::string> &envp, int out_descriptor);
 
     std::string get_working_directory();
 

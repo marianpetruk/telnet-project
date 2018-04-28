@@ -6,10 +6,10 @@ namespace myshell {
         std::cout << "Usage: mexit [code] [-h|--help]" << std::endl;
     }
 
-    int Mexit::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int Mexit::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         try {
             if (argv.size() > 2) {
-                std::cerr << "Too many arguments" << std::endl;
+                session_adapter.write_error("Too many arguments\n");
                 return INVARG;
             }
             else {
@@ -17,7 +17,7 @@ namespace myshell {
             }
         }
         catch (std::invalid_argument &e) {
-            std::cerr << "Invalid argument" << std::endl;
+            session_adapter.write_error("Invalid argument\n");
             return INVARG;
         }
     }

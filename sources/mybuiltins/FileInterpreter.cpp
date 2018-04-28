@@ -8,9 +8,9 @@ namespace myshell {
         std::cout << "Usage: . <filename> [-h|--help]" << std::endl;
     }
 
-    int FileInterpreter::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int FileInterpreter::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         if (argv.size() != 2) {
-            std::cerr << "Invalid number of arguments" << std::endl;
+            session_adapter.write_error("Invalid number of arguments\n");
             return INVARG;
         }
         else {
@@ -18,12 +18,12 @@ namespace myshell {
             std::ifstream file(argv[1]);
             if (file.is_open()) {
                 while (std::getline(file, line)) {
-                    interpreter.interpret(line, variables_map);
+                    interpreter.interpret(line, session_adapter);
                 }
                 file.close();
                 return EXECCP;
             } else {
-                std::cerr << "Invalid filename: " << argv[1] << std::endl;
+                session_adapter.write_error("Invalid filename: %s\n", argv[1].c_str());
                 return INVARG;
             }
         }

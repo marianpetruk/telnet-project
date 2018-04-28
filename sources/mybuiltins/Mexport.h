@@ -3,18 +3,12 @@
 
 
 #include "../Executor.h"
-#include "../interpreter/Interpreter.h"
 
 namespace myshell {
     class Mexport : public Executor {
     protected:
-        Interpreter& interpreter;
-
         void show_help() override;
-        int execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) override;
-
-    public:
-        Mexport(Interpreter &interpreter);
+        int execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) override;
     };
 }
 

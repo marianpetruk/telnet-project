@@ -9,6 +9,7 @@
 
 #include "getargs.h"
 #include "../Executor.h"
+#include "../SessionAdapter.h"
 #include "../syscalls/systemcalls.h"
 
 namespace myshell {
@@ -21,8 +22,8 @@ namespace myshell {
 
         void set_builtins(std::map<std::string, myshell::Executor *> builtins);
 
-        void interpret(const std::vector<std::string> &argv, vm::VariablesMap &variables_map);
-        void interpret(const std::string &line, vm::VariablesMap &variables_map);
+        void interpret(const std::vector<std::string> &argv, SessionAdapter &session_adapter);
+        void interpret(const std::string &line, SessionAdapter &session_adapter);
     };
 }
 

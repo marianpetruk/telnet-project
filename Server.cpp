@@ -14,7 +14,7 @@ Server::Server(asio::io_service &io_service, unsigned short port):
             {"mexit",    new myshell::Mexit()},
             {".",        new myshell::FileInterpreter(interpreter)},
             {"mecho",    new myshell::Mecho()},
-            {"mexport",  new myshell::Mexport(interpreter)}
+            {"mexport",  new myshell::Mexport()}
     };
     interpreter.set_builtins(builtins);
     start_accept();

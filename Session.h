@@ -6,32 +6,28 @@
 #include <iostream>
 #include <sstream>
 
+#include "sources/SessionAdapter.h"
 #include "sources/interpreter/Interpreter.h"
-#include "sources/variable_map/VariablesMap.h"
-
-
-namespace asio = boost::asio;
-namespace ip = boost::asio::ip;
 
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
-    myshell::Interpreter interpreter;
-    vm::VariablesMap variables_map;
-
-    Session(asio::io_service &io_service, myshell::Interpreter &interpreter);
+    Session(boost::asio::io_service &io_service, myshell::Interpreter &interpreter);
 
     ~Session();
 
     void start();
 
-    ip::tcp::socket& get_socket();
+    boost::asio::ip::tcp::socket& get_socket();
 
 private:
     static std::string delim;
 
-    ip::tcp::socket tcp_socket;
-    asio::streambuf data;
+    boost::asio::ip::tcp::socket tcp_socket;
+    boost::asio::streambuf data;
+
+    myshell::Interpreter interpreter;
+    SessionAdapter session_adapter;
 
     void read_socket();
 

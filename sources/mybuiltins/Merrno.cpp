@@ -8,24 +8,24 @@ namespace myshell {
         std::cout << "Usage: merrno [-h|--help]" << std::endl;
     }
 
-    int Merrno::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int Merrno::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         if (argv.size() != 1) {
-            std::cerr << "Too many arguments" << std::endl;
+            session_adapter.write_error("Too many arguments\n");
             return INVARG;
         }
-        std::cerr << "Error code: " << interpreter.MYERRNO << ". ";
+        session_adapter.write_error("Error code: %d. ", interpreter.MYERRNO);
         switch (interpreter.MYERRNO) {
             case EXECFD:
-                std::cerr << "Execution failed." << std::endl;
+                session_adapter.write_error("Execution failed.\n");
                 break;
             case EXECCP:
-                std::cerr << "Execution completed." << std::endl;
+                session_adapter.write_error("Execution completed.\n");
                 break;
             case INVARG:
-                std::cerr << "Invalid arguments." << std::endl;
+                session_adapter.write_error("Invalid arguments.\n");
                 break;
             default:
-                std::cerr << "Some strange error." << std::endl;
+                session_adapter.write_error("Some strange error.\n");
         }
         return EXECCP;
     }

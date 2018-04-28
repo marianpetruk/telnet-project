@@ -6,11 +6,11 @@ namespace myshell {
         std::cout << "Usage: mecho [arg1] [arg2] ... [-h|--help]" << std::endl;
     }
 
-    int Mecho::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int Mecho::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         for (auto val = argv.begin() + 1; val < argv.end(); ++val) {
-            std::cout << *val << " ";
+            session_adapter.write("%s ", val->c_str());
         }
-        std::cout << std::endl;
+        session_adapter.write("\n");
         return EXECCP;
     }
 }

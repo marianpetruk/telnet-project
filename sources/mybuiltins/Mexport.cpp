@@ -2,29 +2,27 @@
 
 
 namespace myshell {
-    Mexport::Mexport(myshell::Interpreter &interpreter): interpreter(interpreter) {};
-
     void Mexport::show_help() {
         std::cout << "Usage: mexport <variable> [-h|--help]" << std::endl;
     }
 
-    int Mexport::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int Mexport::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         if (argv.size() != 2) {
-            std::cerr << "Invalid arguments" << std::endl;
+            session_adapter.write_error("Invalid arguments\n");
             return INVARG;
         }
         try {
             std::string value = argv[1];
             auto pos = value.find('=');
             if (pos != std::string::npos) {     // assigning new value
-                variables_map.set(value.substr(0, pos), value.substr(pos + 1));
+                session_adapter.get_variables_map().set(value.substr(0, pos), value.substr(pos + 1));
                 value = value.substr(0, pos);
             }
-            variables_map.add_to_global(value);
+            session_adapter.get_variables_map().add_to_global(value);
             return EXECCP;
         }
         catch (vm::VariablesMapError &e) {
-            std::cerr << e.what() << std::endl;
+            session_adapter.write_error("%s\n", e.what());
             return EXECFD;
         }
     }

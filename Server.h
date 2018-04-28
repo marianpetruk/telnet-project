@@ -16,17 +16,13 @@
 #include "sources/mybuiltins/Mexport.h"
 
 
-namespace asio = boost::asio;
-namespace ip = boost::asio::ip;
-
-
 class Server {
 public:
-    Server(asio::io_service &io_service, unsigned short port);
+    boost::asio::ip::tcp::acceptor tcp_acceptor;
+
+    Server(boost::asio::io_service &io_service, unsigned short port);
 
 private:
-    ip::tcp::acceptor tcp_acceptor;
-
     myshell::Interpreter interpreter;
 
     void start_accept();

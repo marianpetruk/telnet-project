@@ -11,7 +11,7 @@ namespace myshell {
         Interpreter& interpreter;
 
         void show_help() override;
-        int execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) override;
+        int execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) override;
 
     public:
         explicit Merrno(Interpreter &interpreter);

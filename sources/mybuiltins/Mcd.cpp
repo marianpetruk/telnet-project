@@ -6,10 +6,10 @@ namespace myshell {
         std::cout << "Usage: mcd <path> [-h|--help]" << std::endl;
     }
 
-    int Mcd::execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) {
+    int Mcd::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         try {
             if (argv.size() != 2) {
-                std::cerr << "Too many arguments" << std::endl;
+                session_adapter.write_error("Too many arguments");
                 return INVARG;
             }
             else {
@@ -18,7 +18,7 @@ namespace myshell {
             }
         }
         catch (syscalls::SystemCallError &e) {
-            std::cerr << e.what() << std::endl;
+            session_adapter.write_error(e.what());
             return EXECFD;
         }
     }

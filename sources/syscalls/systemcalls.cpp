@@ -1,7 +1,7 @@
 #include "systemcalls.h"
 
 
-int syscalls::execute(const std::vector<std::string> &argv, const std::vector<std::string> &envp) {
+int syscalls::execute(const std::vector<std::string> &argv, const std::vector<std::string> &envp, int out_descriptor) {
     pid_t pid = fork();
     if (pid == -1) {
         throw SystemCallError(errno);
@@ -17,6 +17,9 @@ int syscalls::execute(const std::vector<std::string> &argv, const std::vector<st
     }
     else {
         // child process
+        close(STDOUT_FILENO);
+        dup2(out_descriptor, STDOUT_FILENO);
+
         std::vector<const char*> child_args;
         for (const auto &i : argv) {
             child_args.push_back(i.c_str());

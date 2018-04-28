@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "variable_map/VariablesMap.h"
+#include "SessionAdapter.h"
 
 #define   EXECFD    -1
 #define   EXECCP     0
@@ -16,10 +16,10 @@ namespace myshell {
     class Executor {
     protected:
         virtual void show_help() = 0;
-        virtual int execute_command(const std::vector<std::string> &argv, vm::VariablesMap &variables_map) = 0;
+        virtual int execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) = 0;
 
     public:
-        int execute(const std::vector<std::string> &argv, vm::VariablesMap &variables_map);
+        int execute(const std::vector<std::string> &argv, SessionAdapter &session_adapter);
     };
 }
 
