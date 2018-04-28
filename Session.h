@@ -6,7 +6,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "execute.h"
+#include "sources/interpreter/Interpreter.h"
+#include "sources/variable_map/VariablesMap.h"
 
 
 namespace asio = boost::asio;
@@ -15,7 +16,10 @@ namespace ip = boost::asio::ip;
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
-    Session(asio::io_service &io_service);
+    myshell::Interpreter interpreter;
+    vm::VariablesMap variables_map;
+
+    Session(asio::io_service &io_service, myshell::Interpreter &interpreter);
 
     ~Session();
 
@@ -33,7 +37,5 @@ private:
 
     void write_socket(std::size_t  length);
 };
-
-
 
 #endif //ECHOSERVER_SESSION_H

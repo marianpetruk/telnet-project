@@ -7,7 +7,8 @@ namespace ip = boost::asio::ip;
 
 std::string Session::delim = "</bbp>";
 
-Session::Session(asio::io_service &io_service): tcp_socket(io_service) {};
+Session::Session(asio::io_service &io_service, myshell::Interpreter &interpreter):
+        tcp_socket(io_service), interpreter(interpreter) {};
 
 Session::~Session() {
     std::cout << "Closed session with socket: " << tcp_socket.native_handle() << std::endl;
@@ -39,11 +40,7 @@ void Session::write_socket(std::size_t  length) {
     data.consume(length);
 
     std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
-    std::istringstream iss(command);
-    std::vector<std::string> argv(
-            std::istream_iterator<std::string>{iss},
-            std::istream_iterator<std::string>());
-    execute(argv, tcp_socket.native_handle());
+    interpreter.interpret(command, variables_map);
 
     asio::async_write(
             tcp_socket, asio::buffer(Session::delim),

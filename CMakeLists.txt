@@ -10,8 +10,15 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_executable(shellserver Session.cpp Session.h Server.cpp Server.h
-        execute.h execute.cpp)
+
+FILE(GLOB_RECURSE MYSHELL_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/sources/*.h")
+
+add_executable(shellserver
+        Server.cpp Server.h
+        Session.cpp Session.h
+        ${MYSHELL_FILES})
 target_include_directories(shellserver PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(shellserver ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
