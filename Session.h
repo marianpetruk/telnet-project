@@ -1,14 +1,39 @@
-//
-// Created by vasyl on 4/28/2018.
-//
-
 #ifndef ECHOSERVER_SESSION_H
 #define ECHOSERVER_SESSION_H
 
 
-class Session {
+#include "boost/asio.hpp"
+#include <iostream>
+#include <sstream>
 
+#include "execute.h"
+
+
+namespace asio = boost::asio;
+namespace ip = boost::asio::ip;
+
+
+class Session : public std::enable_shared_from_this<Session> {
+public:
+    Session(asio::io_service &io_service);
+
+    ~Session();
+
+    void start();
+
+    ip::tcp::socket& get_socket();
+
+private:
+    static std::string delim;
+
+    ip::tcp::socket tcp_socket;
+    asio::streambuf data;
+
+    void read_socket();
+
+    void write_socket(std::size_t  length);
 };
+
 
 
 #endif //ECHOSERVER_SESSION_H
