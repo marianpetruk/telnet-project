@@ -13,7 +13,8 @@ namespace myshell {
                 return INVARG;
             }
             else {
-                syscalls::change_directory(argv[1]);
+                std::string new_path = session_adapter.get_variables_map().get("PWD") + "/" + argv[1];
+                session_adapter.get_variables_map().set("PWD", syscalls::real_path(new_path));
                 return EXECCP;
             }
         }

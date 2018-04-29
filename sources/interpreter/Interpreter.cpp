@@ -17,13 +17,14 @@ namespace myshell {
             return;
         }
 
-        auto pos = argv[0].find('=');
         if (argv[0].find('=') != std::string::npos) {       // assigning some variable
             if (argv.size() != 1) {
                 session_adapter.MYERRNO = INVARG;
                 session_adapter.write_error("Too many arguments for assigning value\n");
             }
-            session_adapter.get_variables_map().set(argv[0].substr(0, pos), argv[0].substr(pos + 1));
+            else {
+                session_adapter.get_variables_map().set(argv[0]);
+            }
         }
         else {
             try {

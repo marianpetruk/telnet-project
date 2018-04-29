@@ -5,46 +5,54 @@ extern char** environ;
 
 namespace vm {
     VariablesMap::VariablesMap() {
+        // Copy environ
         for (char** ep = environ; *ep != NULL; ++ep) {
-            std::string val(*ep);
-            global_vm.insert(val.substr(0, val.find('=')));
+            std::string variable(*ep);
+            auto pos = variable.find('=');
+            std::string key = variable.substr(0, pos);
+            std::string val = variable.substr(pos + 1);
+            variables[key] = val;
+            global_variables.insert(key);
         }
     }
 
     bool VariablesMap::contains(const std::string &key) {
-        const char* value = getenv(key.c_str());
-        return value != nullptr;
+        return variables.find(key) != variables.end();
     }
 
     std::string VariablesMap::get(const std::string &key) {
-        const char* value = getenv(key.c_str());
-        if (value == nullptr) {
+        auto found = variables.find(key);
+        if (found == variables.end()) {
             throw VariablesMapError(key);
         }
-        return value;
+        return found->second;
     }
 
-    void VariablesMap::set(const std::string &key, const std::string &value) {
-        if (setenv(key.c_str(), value.c_str(), 1)) {
-            throw VariablesMapError(key);
+    void VariablesMap::set(const std::string &value) {
+        auto pos = value.find('=');
+        if (pos == std::string::npos) {
+            throw VariablesMapError(value);
         }
+        set(value.substr(0, pos), value.substr(pos + 1));
+    }
+    void VariablesMap::set(const std::string &key, const std::string &value) {
+        variables[key] = value;
     }
 
     void VariablesMap::add_to_global(const std::string &key) {
         if (contains(key)) {
-            global_vm.insert(key);
+            global_variables.insert(key);
         }
         else {
-            throw VariablesMapError("key");
+            throw VariablesMapError(key);
         }
     }
 
     std::vector<std::string> VariablesMap::get_global() {
         std::vector<std::string> result;
-        for (char** ep = environ; *ep != NULL; ++ep) {
-            std::string val(*ep);
-            if (global_vm.find(val.substr(0, val.find('='))) != global_vm.end()) {
-                result.push_back(val);
+        for (auto &val : variables) {
+            if (global_variables.find(val.first) != global_variables.end()) {
+                result.push_back(val.first + "=" + val.second);
             }
         }
         return result;

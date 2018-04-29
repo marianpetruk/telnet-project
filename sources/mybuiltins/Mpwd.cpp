@@ -7,19 +7,13 @@ namespace myshell {
     }
 
     int Mpwd::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
-        try {
-            if (argv.size() > 1) {
-                session_adapter.write_error("Too many arguments\n");
-                return INVARG;
-            }
-            else {
-                session_adapter.write("%s\n", syscalls::get_working_directory().c_str());
-                return EXECCP;
-            }
+        if (argv.size() > 1) {
+            session_adapter.write_error("Too many arguments\n");
+            return INVARG;
         }
-        catch (syscalls::SystemCallError &e) {
-            session_adapter.write_error("%s\n", e.what());
-            return EXECFD;
+        else {
+            session_adapter.write("%s\n", session_adapter.get_variables_map().get("PWD").c_str());
+            return EXECCP;
         }
     }
 }

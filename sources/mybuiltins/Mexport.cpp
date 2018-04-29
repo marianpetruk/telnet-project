@@ -14,8 +14,8 @@ namespace myshell {
         try {
             std::string value = argv[1];
             auto pos = value.find('=');
-            if (pos != std::string::npos) {     // assigning new value
-                session_adapter.get_variables_map().set(value.substr(0, pos), value.substr(pos + 1));
+            if (value.find('=') != std::string::npos) {     // assigning new value
+                session_adapter.get_variables_map().set(value);
                 value = value.substr(0, pos);
             }
             session_adapter.get_variables_map().add_to_global(value);
