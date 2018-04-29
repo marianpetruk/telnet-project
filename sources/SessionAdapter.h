@@ -2,7 +2,8 @@
 #define ECHOSERVER_SESSIONADAPTER_H
 
 
-#include <iostream>
+#include <stdio.h>
+#include <stdarg.h>
 #include <unistd.h>
 
 #include "variable_map/VariablesMap.h"
@@ -13,6 +14,8 @@ private:
     vm::VariablesMap variables_map;
 
 public:
+    int MYERRNO = 0;
+
     void write(const char* message, ...);
     void write(std::string &message, ...);
     void write_error(const char* message, ...);

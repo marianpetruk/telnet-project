@@ -13,8 +13,8 @@ namespace myshell {
             session_adapter.write_error("Too many arguments\n");
             return INVARG;
         }
-        session_adapter.write_error("Error code: %d. ", interpreter.MYERRNO);
-        switch (interpreter.MYERRNO) {
+        session_adapter.write_error("Error code: %d. ", session_adapter.MYERRNO);
+        switch (session_adapter.MYERRNO) {
             case EXECFD:
                 session_adapter.write_error("Execution failed.\n");
                 break;

@@ -13,26 +13,26 @@ namespace myshell {
 
         auto found = builtins.find(argv[0]);
         if (found != builtins.end()) {                      // found builtin function
-            MYERRNO = (found->second)->execute(argv, session_adapter);
+            session_adapter.MYERRNO = (found->second)->execute(argv, session_adapter);
             return;
         }
 
         auto pos = argv[0].find('=');
         if (argv[0].find('=') != std::string::npos) {       // assigning some variable
             if (argv.size() != 1) {
-                MYERRNO = INVARG;
+                session_adapter.MYERRNO = INVARG;
                 session_adapter.write_error("Too many arguments for assigning value\n");
             }
             session_adapter.get_variables_map().set(argv[0].substr(0, pos), argv[0].substr(pos + 1));
         }
         else {
             try {
-                MYERRNO = syscalls::execute(argv,
+                session_adapter.MYERRNO = syscalls::execute(argv,
                                             session_adapter.get_variables_map().get_global(),
                                             session_adapter.get_out_descriptor());
             }
             catch (syscalls::SystemCallError &e) {
-                MYERRNO = EXECFD;
+                session_adapter.MYERRNO = EXECFD;
                 session_adapter.write_error("%s\n", e.what());
             }
         }

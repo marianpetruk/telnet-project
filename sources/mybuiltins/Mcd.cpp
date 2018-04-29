@@ -9,7 +9,7 @@ namespace myshell {
     int Mcd::execute_command(const std::vector<std::string> &argv, SessionAdapter &session_adapter) {
         try {
             if (argv.size() != 2) {
-                session_adapter.write_error("Too many arguments");
+                session_adapter.write_error("Too many arguments\n");
                 return INVARG;
             }
             else {
@@ -18,7 +18,7 @@ namespace myshell {
             }
         }
         catch (syscalls::SystemCallError &e) {
-            session_adapter.write_error(e.what());
+            session_adapter.write_error("%s\n", e.what());
             return EXECFD;
         }
     }

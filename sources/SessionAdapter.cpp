@@ -3,19 +3,23 @@
 
 void SessionAdapter::write(const char* message, ...) {
     va_list vl;
-    dprintf(out_descriptor, message, vl);
+    va_start(vl, message);
+    vdprintf(out_descriptor, message, vl);
 }
 void SessionAdapter::write(std::string &message, ...) {
     va_list vl;
+    va_start(vl, message);
     write(message.c_str(), vl);
 }
 
 void SessionAdapter::write_error(const char* message, ...) {
     va_list vl;
-    dprintf(out_descriptor, message, vl);
+    va_start(vl, message);
+    vdprintf(out_descriptor, message, vl);
 }
 void SessionAdapter::write_error(std::string &message, ...) {
     va_list vl;
+    va_start(vl, message);
     write_error(message.c_str(), vl);
 }
 
