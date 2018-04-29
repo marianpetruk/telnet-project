@@ -48,11 +48,11 @@ namespace vm {
         }
     }
 
-    std::vector<std::string> VariablesMap::get_global() {
-        std::vector<std::string> result;
+    std::map<std::string, std::string> VariablesMap::get_global() {
+        std::map<std::string, std::string> result;
         for (auto &val : variables) {
             if (global_variables.find(val.first) != global_variables.end()) {
-                result.push_back(val.first + "=" + val.second);
+                result[val.first] = val.second;
             }
         }
         return result;

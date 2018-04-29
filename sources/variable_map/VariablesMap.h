@@ -3,7 +3,6 @@
 
 
 #include <algorithm>
-#include <vector>
 #include <set>
 #include <map>
 
@@ -27,7 +26,7 @@ namespace vm {
 
         void add_to_global(const std::string &key);
 
-        std::vector<std::string> get_global();
+        std::map<std::string, std::string> get_global();
     };
 }
 

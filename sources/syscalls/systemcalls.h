@@ -2,7 +2,6 @@
 #define MYSHELL_SYSTEMCALLS_H
 
 
-#include <algorithm>
 #include <vector>
 #include <map>
 #include <string>
@@ -14,7 +13,8 @@
 #include "systemcallerror.h"
 
 namespace syscalls {
-    int execute(const std::vector<std::string> &argv, const std::vector<std::string> &envp, int out_descriptor);
+    int execute(const std::vector<std::string> &argv,
+                const std::map<std::string, std::string> &envp, int out_descriptor);
 
     std::string real_path(std::string &path);
 
