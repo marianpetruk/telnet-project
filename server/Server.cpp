@@ -8,7 +8,7 @@ namespace ip = boost::asio::ip;
 Server::Server(asio::io_service &io_service, unsigned short port):
         tcp_acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), port)) {
     const std::map<std::string, myshell::Executor*> builtins = {
-            {"errno",   new myshell::Merrno(interpreter)},
+            {"errno",   new myshell::Merrno()},
             {"pwd",     new myshell::Mpwd()},
             {"cd",      new myshell::Mcd()},
             {"exit",    new myshell::Mexit()},
