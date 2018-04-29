@@ -23,6 +23,10 @@ void SessionAdapter::write_error(std::string &message, ...) {
     write_error(message.c_str(), vl);
 }
 
+void SessionAdapter::close_session(int exit_code) {
+    throw CloseSession();
+}
+
 void SessionAdapter::set_out_descriptor(int new_descriptor) {
     out_descriptor = new_descriptor;
 }
@@ -32,4 +36,8 @@ int SessionAdapter::get_out_descriptor() {
 
 vm::VariablesMap& SessionAdapter::get_variables_map() {
     return variables_map;
+}
+
+const char* CloseSession::what() const throw() {
+    return "Closing session";
 }

@@ -21,11 +21,17 @@ public:
     void write_error(const char* message, ...);
     void write_error(std::string &message, ...);
 
+    void close_session(int exit_code);
+
     void set_out_descriptor(int new_descriptor);
     int get_out_descriptor();
 
     vm::VariablesMap& get_variables_map();
 };
 
+class CloseSession : std::exception {
+public:
+    const char *what() const throw();
+};
 
 #endif //ECHOSERVER_SESSIONADAPTER_H

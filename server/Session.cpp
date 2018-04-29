@@ -41,8 +41,13 @@ void Session::write_socket(std::size_t  length) {
     data.consume(length);
 
     std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
-    interpreter.interpret(command, session_adapter);
-    asio::write(tcp_socket, asio::buffer(session_adapter.get_variables_map().get("PWD") + "$ "));
+    try {
+        interpreter.interpret(command, session_adapter);
+        asio::write(tcp_socket, asio::buffer(session_adapter.get_variables_map().get("PWD") + "$ "));
+    }
+    catch (CloseSession &e) {
+        tcp_socket.close();
+    }
 
     asio::async_write(
             tcp_socket, asio::buffer(Session::delim),

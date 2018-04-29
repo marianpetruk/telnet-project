@@ -13,7 +13,7 @@ namespace myshell {
                 return INVARG;
             }
             else {
-                exit(argv.size() == 1 ? 0 : std::stoi(argv[1]));
+                session_adapter.close_session(argv.size() == 1 ? 0 : std::stoi(argv[1]));
             }
         }
         catch (std::invalid_argument &e) {
