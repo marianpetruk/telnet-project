@@ -42,6 +42,7 @@ void Session::write_socket(std::size_t  length) {
 
     std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
     interpreter.interpret(command, session_adapter);
+    asio::write(tcp_socket, asio::buffer(session_adapter.get_variables_map().get("PWD") + "$ "));
 
     asio::async_write(
             tcp_socket, asio::buffer(Session::delim),

@@ -22,7 +22,7 @@ void read_handler(const boost::system::error_code &ec,
         std::string response(buffers_begin(data.data()), buffers_begin(data.data()) + length - delim.size());
         data.consume(length);
 
-        std::cout << response << std::endl;
+        std::cout << response;
         connect_handler(ec);
     }
 }

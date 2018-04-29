@@ -26,6 +26,8 @@ int syscalls::execute(const std::vector<std::string> &argv,
 
         close(STDOUT_FILENO);
         dup2(out_descriptor, STDOUT_FILENO);
+        close(STDERR_FILENO);
+        dup2(out_descriptor, STDERR_FILENO);
 
         std::vector<const char*> child_args;
         for (const auto &i : argv) {
