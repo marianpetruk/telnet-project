@@ -43,7 +43,10 @@ void Session::write_socket(std::size_t  length) {
     std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
     try {
         interpreter.interpret(command, session_adapter);
-        asio::write(tcp_socket, asio::buffer(session_adapter.get_variables_map().get("PWD") + "$ "));
+        std::string username = session_adapter.get_variables_map().get("USER");
+        std::string hostname = session_adapter.get_variables_map().get("HOSTNAME");
+
+        asio::write(tcp_socket, asio::buffer("[\033[1;32m" + username + "@" + hostname + "\033[0m " + "\033[1;34m" + session_adapter.get_variables_map().get("PWD") + "\033[0m]$ "));
     }
     catch (CloseSession &e) {
         tcp_socket.close();

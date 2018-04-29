@@ -1,5 +1,5 @@
 #include "VariablesMap.h"
-
+#include <boost/asio/ip/host_name.hpp>
 
 extern char** environ;
 
@@ -14,6 +14,7 @@ namespace vm {
             variables[key] = val;
             global_variables.insert(key);
         }
+        variables["HOSTNAME"] =  boost::asio::ip::host_name();
     }
 
     bool VariablesMap::contains(const std::string &key) {
