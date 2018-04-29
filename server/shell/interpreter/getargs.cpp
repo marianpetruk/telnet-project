@@ -61,13 +61,11 @@ vector<string> wildcard(string matched, string path){
         return result;
     else {
         while(n--) {
+            if(strcmp(namelist[n]->d_name, ".") != 0 && strcmp(namelist[n]->d_name, "..") != 0)
 
-        if(strcmp(namelist[n]->d_name, ".") != 0 && strcmp(namelist[n]->d_name, "..") != 0)
-            
             if(match(matched.c_str(), namelist[n]->d_name)){
                 result.push_back(namelist[n]->d_name);
             }
-            
             free(namelist[n]);
         
         }
@@ -183,31 +181,31 @@ vector<string> get_args(string input, vm::VariablesMap &variables) {
 
         if(input[i] == ' ' && !single_quotes_opened && !double_quotes_opened){
 
-                // START
-                if(curr_word.size() > 0){
+            // START
+            if(curr_word.size() > 0){
 
-                    // cout<<replacing<<" "<<(!is_flag)<<" "<<(result.size() > 0)<<" "<<curr_word<<endl;
-                    if(replacing && !is_flag && result.size() > 0){
+                // cout<<replacing<<" "<<(!is_flag)<<" "<<(result.size() > 0)<<" "<<curr_word<<endl;
+                if(replacing && !is_flag && result.size() > 0){
 
-                        cpy = curr_word;
-                        basec = strdup(const_cast<char*>(cpy.c_str()));
-                        path = dirname(const_cast<char*>(cpy.c_str()));
-                        regex = basename(const_cast<char*>(basec.c_str()));
+                    cpy = curr_word;
+                    basec = strdup(const_cast<char*>(cpy.c_str()));
+                    path = dirname(const_cast<char*>(cpy.c_str()));
+                    regex = basename(const_cast<char*>(basec.c_str()));
 
-                        vector<string> matched = wildcard(regex, path);
-                        
-                        for(auto item: matched){
-                            result.push_back(path + "/" + item);
-                        }
-                        if(matched.empty()){
-                            result.push_back(curr_word);
-                        }
+                    vector<string> matched = wildcard(regex, path);
+
+                    for(auto item: matched){
+                        result.push_back(path + "/" + item);
                     }
-                    else{
+                    if(matched.empty()){
                         result.push_back(curr_word);
                     }
                 }
-                // FINISH
+                else{
+                    result.push_back(curr_word);
+                }
+            }
+            // FINISH
 
             replacing = true;
             curr_word = "";

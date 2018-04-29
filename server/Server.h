@@ -6,14 +6,14 @@
 #include "boost/bind.hpp"
 
 #include "Session.h"
-#include "sources/interpreter/Interpreter.h"
-#include "sources/mybuiltins/Merrno.h"
-#include "sources/mybuiltins/Mcd.h"
-#include "sources/mybuiltins/Mpwd.h"
-#include "sources/mybuiltins/Mexit.h"
-#include "sources/mybuiltins/FileInterpreter.h"
-#include "sources/mybuiltins/Mecho.h"
-#include "sources/mybuiltins/Mexport.h"
+#include "shell/interpreter/Interpreter.h"
+#include "shell/mybuiltins/Merrno.h"
+#include "shell/mybuiltins/Mcd.h"
+#include "shell/mybuiltins/Mpwd.h"
+#include "shell/mybuiltins/Mexit.h"
+#include "shell/mybuiltins/FileInterpreter.h"
+#include "shell/mybuiltins/Mecho.h"
+#include "shell/mybuiltins/Mexport.h"
 
 
 class Server {

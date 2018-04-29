@@ -36,10 +36,3 @@ void Server::handle_accept(std::shared_ptr<Session> new_session,
         start_accept();
     }
 }
-
-
-int main() {
-    asio::io_service io_service;
-    Server server(io_service, 2014);
-    io_service.run();
-}

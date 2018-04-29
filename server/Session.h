@@ -6,8 +6,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "sources/SessionAdapter.h"
-#include "sources/interpreter/Interpreter.h"
+#include "shell/SessionAdapter.h"
+#include "shell/interpreter/Interpreter.h"
 
 
 class Session : public std::enable_shared_from_this<Session> {
