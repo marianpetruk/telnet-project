@@ -42,10 +42,31 @@ void connect_handler(const boost::system::error_code &ec) {
     }
 }
 
+void login_handler(const boost::system::error_code &ec,
+                   std::size_t bytes_transferred) {
+    if (!ec) {
+        size_t length = read_until(tcp_socket, data, delim);
+        std::string response(buffers_begin(data.data()), buffers_begin(data.data()) + length - delim.size());
+        data.consume(length);
+        std::cout << response;
+        connect_handler(ec);
+    }
+}
+
+void login(const boost::system::error_code &ec) {
+    if (!ec) {
+        std::cout << "Enter username: ";
+        std::string r;
+        std::getline(std::cin, r);
+        r += delim;
+        async_write(tcp_socket, buffer(r), login_handler);
+    }
+}
+
 void resolve_handler(const boost::system::error_code &ec,
                      tcp::resolver::iterator it) {
     if (!ec)
-        tcp_socket.async_connect(*it, connect_handler);
+        tcp_socket.async_connect(*it, login);
 }
 
 int main() {

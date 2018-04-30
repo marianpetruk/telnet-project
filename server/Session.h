@@ -29,6 +29,10 @@ private:
     myshell::Interpreter interpreter;
     SessionAdapter session_adapter;
 
+    void read_login();
+
+    void process_login(std::size_t  length);
+
     void read_socket();
 
     void write_socket(std::size_t  length);
