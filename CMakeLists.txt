@@ -22,3 +22,5 @@ target_link_libraries(shellserver ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 add_executable(shelluser shelluser.cpp)
 target_include_directories(shelluser PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(shelluser ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(tester tester.cpp)
