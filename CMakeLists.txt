@@ -15,6 +15,10 @@ FILE(GLOB_RECURSE SERVER_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/server/*.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/server/*.h")
 
+FILE(GLOB_RECURSE SHELL_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/sources/*.h")
+
 add_executable(shellserver runserver.cpp ${SERVER_FILES})
 target_include_directories(shellserver PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(shellserver ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
@@ -23,4 +27,4 @@ add_executable(shelluser shelluser.cpp)
 target_include_directories(shelluser PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(shelluser ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
-add_executable(tester tester.cpp)
+add_executable(myshell ${SHELL_FILES})
