@@ -20,8 +20,6 @@ public:
     boost::asio::ip::tcp::socket& get_socket();
 
 private:
-    int bash_fd;
-
     static std::string delim;
 
     boost::asio::ip::tcp::socket tcp_socket;

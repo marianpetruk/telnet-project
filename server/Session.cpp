@@ -46,10 +46,11 @@ void Session::process_login(std::size_t length) {
     }
     else if (pid == 0) {
 //        dup2(tcp_socket.native_handle(), STDIN_FILENO);
-        close(pipe_fd[1]);
         dup2(pipe_fd[0], STDIN_FILENO);
         dup2(tcp_socket.native_handle(), STDOUT_FILENO);
         dup2(tcp_socket.native_handle(), STDERR_FILENO);
+        close(pipe_fd[1]);
+        tcp_socket.close();
 
         std::vector<const char*> child_args;
         child_args.push_back("./myshell");
@@ -58,7 +59,7 @@ void Session::process_login(std::size_t length) {
     }
     else {
         close(pipe_fd[0]);
-        bash_fd = pipe_fd[1];
+        int bash_fd = pipe_fd[1];
         try {
             char data[1024];
             size_t size = tcp_socket.read_some(boost::asio::buffer(data));

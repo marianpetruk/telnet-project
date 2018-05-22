@@ -27,12 +27,18 @@ void login_handler(const boost::system::error_code &ec,
         std::thread writer(send_data);
         writer.detach();
 
-        char data[1024];
-        size_t length = tcp_socket.read_some(boost::asio::buffer(data));
-        while (length != 0) {
-            std::string response(data, data + length);
-            std::cout << response;
-            length = tcp_socket.read_some(boost::asio::buffer(data));
+        try {
+            char data[1024];
+            size_t length = tcp_socket.read_some(boost::asio::buffer(data));
+            while (length != 0) {
+                std::string response(data, data + length);
+                std::cout << response;
+                length = tcp_socket.read_some(boost::asio::buffer(data));
+            }
+        }
+        catch (std::exception &e) {
+            tcp_socket.close();
+            std::cout << "Connection lost" << std::endl;
         }
     }
 }
@@ -53,8 +59,14 @@ void resolve_handler(const boost::system::error_code &ec,
         tcp_socket.async_connect(*it, login);
 }
 
-int main() {
-    tcp::resolver::query q{"localhost", "2014"};
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: shelluser <host> <port>" << std::endl;
+        return -1;
+    }
+    tcp::resolver::query q{argv[1], argv[2]};
     resolv.async_resolve(q, resolve_handler);
     ioservice.run();
+
+    return 0;
 }

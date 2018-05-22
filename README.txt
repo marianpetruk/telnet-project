@@ -5,10 +5,10 @@ Build all files:
 mkdir cmake-build-release && cd cmake-build-release && cmake ../ -DCMAKE_BUILD_TYPE=Release && make
 
 Run server (inside 'cmake-build-release' folder):
-./shellserver
+./shellserver <port>
 
 Run user (inside 'cmake-build-release' folder):
-./shelluser
+./shelluser <host> <port>
 
 Rebuild (inside 'cmake-build-release' folder):
 make clean && make
