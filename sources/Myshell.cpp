@@ -38,7 +38,7 @@ namespace myshell{
         std::string username = variablesMap.get("USER");
         std::string line;
         while (true) {
-            std::cout << (username + ":" + syscalls::get_working_directory() + ": ") << std::endl;
+            std::cout << ("[\033[1;32m" + username + "\033[0m " + "\033[1;34m" + syscalls::get_working_directory() + "\033[0m]$: ") << std::endl;
             if (std::getline(std::cin, line)) {
                 interpreter.interpret(line);
             }
