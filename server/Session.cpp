@@ -7,15 +7,13 @@ namespace ip = boost::asio::ip;
 
 std::string Session::delim = "</bbp>";
 
-Session::Session(asio::io_service &io_service, myshell::Interpreter &interpreter):
-        tcp_socket(io_service), interpreter(interpreter), session_adapter(){}
+Session::Session(asio::io_service &io_service): tcp_socket(io_service){}
 
 Session::~Session() {
     std::cout << "Closed session with socket: " << tcp_socket.native_handle() << std::endl;
 }
 
 void Session::start() {
-    session_adapter.set_out_descriptor(tcp_socket.native_handle());
     std::cout << "Started session with socket: " << tcp_socket.native_handle() << std::endl;
     read_login();
 }
@@ -48,6 +46,7 @@ void Session::process_login(std::size_t length) {
     }
     else if (pid == 0) {
 //        dup2(tcp_socket.native_handle(), STDIN_FILENO);
+        close(pipe_fd[1]);
         dup2(pipe_fd[0], STDIN_FILENO);
         dup2(tcp_socket.native_handle(), STDOUT_FILENO);
         dup2(tcp_socket.native_handle(), STDERR_FILENO);
@@ -58,14 +57,15 @@ void Session::process_login(std::size_t length) {
         execvp("./myshell", const_cast<char* const*>(child_args.data()));
     }
     else {
+        close(pipe_fd[0]);
         bash_fd = pipe_fd[1];
         try {
             char data[1024];
-            size_t length = tcp_socket.read_some(boost::asio::buffer(data));
-            while (length != 0) {
-                std::string response(data, data + length);
+            size_t size = tcp_socket.read_some(boost::asio::buffer(data));
+            while (size != 0) {
+                std::string response(data, data + size);
                 write(bash_fd, response.data(), response.size());
-                length = tcp_socket.read_some(boost::asio::buffer(data));
+                size = tcp_socket.read_some(boost::asio::buffer(data));
             }
         }
         catch (std::exception &e) {
@@ -74,47 +74,4 @@ void Session::process_login(std::size_t length) {
             waitpid(pid, &status, 0);
         }
     }
-}
-
-//    session_adapter.get_variables_map().set("USERNAME", username);
-//    std::string hostname = session_adapter.get_variables_map().get("HOSTNAME");
-//    asio::write(tcp_socket, asio::buffer("[\033[1;32m" + username + "@" + hostname + "\033[0m " + "\033[1;34m" + session_adapter.get_variables_map().get("PWD") + "\033[0m]$ "));
-//
-//    asio::async_write(
-//            tcp_socket, asio::buffer(Session::delim),
-//            [this, self](boost::system::error_code ec, std::size_t /* length */){
-//                if (!ec) {
-//                    read_socket();
-//                }
-//            });
-//}
-
-void Session::read_socket() {
-    auto self(shared_from_this());  // using self to prevent delete in lambda function
-    asio::async_read_until(
-            tcp_socket, data, Session::delim,
-            [this, self](boost::system::error_code ec, std::size_t length){
-                if (!ec) {
-                    write_socket(length);
-                }
-            });
-}
-
-void Session::write_socket(std::size_t  length) {
-    auto self(shared_from_this());  // using self to prevent delete in lambda function
-
-    std::string command(asio::buffers_begin(data.data()),
-                        asio::buffers_begin(data.data()) + length - Session::delim.size());
-    data.consume(length);
-
-    std::cout << "From " << tcp_socket.native_handle() << " executing: " << command << std::endl;
-    //write(bash_fd, command.data(), command.size());
-
-    asio::async_write(
-            tcp_socket, asio::buffer(Session::delim),
-            [this, self](boost::system::error_code ec, std::size_t /* length */){
-                if (!ec) {
-                    read_socket();
-                }
-            });
 }
