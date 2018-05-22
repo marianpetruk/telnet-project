@@ -40,7 +40,7 @@ namespace server {
                              asio::buffers_begin(streambf.data()) + length - Session::delim.size());
         streambf.consume(length);
 
-        if (start_shell("./myshell", tcp_socket.native_handle(), bash_fd, bash_id)) {
+        if (start_shell("./myshell", username, tcp_socket.native_handle(), bash_fd, bash_id)) {
             start_reading();
         }
     }

@@ -2,7 +2,8 @@
 
 
 namespace server {
-    bool start_shell(const std::string &filename, int socket_fd, int& shell_fd, int& shell_id) {
+    bool start_shell(const std::string &filename, const std::string& username,
+                     int socket_fd, int& shell_fd, int& shell_id) {
         int pipe_fd[2];
         pipe(pipe_fd);
         int pid = fork();
@@ -15,6 +16,7 @@ namespace server {
             dup2(socket_fd, STDOUT_FILENO);
             dup2(socket_fd, STDERR_FILENO);
             close(pipe_fd[1]);
+            setenv("USER", username.c_str(), 1);
 
             std::vector<const char *> child_args;
             child_args.push_back(filename.c_str());

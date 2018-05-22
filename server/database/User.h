@@ -4,13 +4,15 @@
 
 #include <string>
 
-namespace database {
-    class User {
-    public:
+namespace server {
+    namespace database {
+        class User {
+            public:
         std::string name;
         std::string password;
         User (std::string, std::string);
-    };
+        };
+    }
 }
 
 
