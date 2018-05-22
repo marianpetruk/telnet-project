@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
         unsigned short port;
         port = boost::lexical_cast<unsigned short>(argv[1]);
         boost::asio::io_service io_service;
-        Server server(io_service, port);
+        server::Server server(io_service, port);
         io_service.run();
     }
     catch (boost::bad_lexical_cast &e) {

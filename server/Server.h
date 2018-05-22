@@ -7,17 +7,19 @@
 
 #include "Session.h"
 
-class Server {
-public:
-    boost::asio::ip::tcp::acceptor tcp_acceptor;
+namespace server {
+    class Server {
+    public:
+        boost::asio::ip::tcp::acceptor tcp_acceptor;
 
-    Server(boost::asio::io_service &io_service, unsigned short port);
+        Server(boost::asio::io_service &io_service, unsigned short port);
 
-private:
-    void start_accept();
+    private:
+        void start_accept();
 
-    void handle_accept(std::shared_ptr<Session> new_session,
-                       const boost::system::error_code& error);
-};
+        void handle_accept(std::shared_ptr<Session> new_session,
+                           const boost::system::error_code &error);
+    };
+}
 
 #endif //ECHOSERVER_SERVER_H
