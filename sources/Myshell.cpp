@@ -37,16 +37,10 @@ namespace myshell{
             }
 
             std::string username = variablesMap.get("USER");
-            std::string hostname;
-            try {
-                hostname = variablesMap.get("HOSTNAME");
-            }
-            catch (vm::VariablesMapError &e) {
-                hostname = variablesMap.get("NAME");
-            }
+            std::string hostname = syscalls::get_hostname();
             std::string line;
             while (true) {
-                std::cout << ("[\033[1;32m" + username + "@" + hostname + "\033[0m " +
+                std::cout << ("[\033[1;32m" + username + "@" + hostname + "\033[0m:" +
                               "\033[1;34m" + syscalls::get_working_directory() + "\033[0m]$: ") << std::endl;
                 if (std::getline(std::cin, line)) {
                     interpreter.interpret(line);

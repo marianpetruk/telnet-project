@@ -9,6 +9,14 @@ std::string syscalls::get_working_directory() {
     return std::string(current_path);
 }
 
+std::string syscalls::get_hostname() {
+    char hostname[HOST_NAME_MAX];
+    if (gethostname(hostname, HOST_NAME_MAX) == -1) {
+        throw SystemCallError(errno);
+    }
+    return std::string(hostname);
+}
+
 int syscalls::change_directory(const std::string &destination) {
     if (chdir(destination.c_str())) {
         throw SystemCallError(errno);

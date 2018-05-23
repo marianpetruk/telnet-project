@@ -7,11 +7,14 @@
 #include <string>
 #include <unistd.h>
 #include <fcntl.h>
+#include <limits.h>
 
 #include "systemcallerror.h"
 
 namespace syscalls {
     std::string get_working_directory();
+
+    std::string get_hostname();
 
     int change_directory(const std::string &destination);
 
