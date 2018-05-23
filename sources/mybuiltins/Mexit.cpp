@@ -11,8 +11,7 @@ namespace myshell {
             if (argv.size() > 2) {
                 std::cerr << "Too many arguments" << std::endl;
                 return INVARG;
-            }
-            else {
+            } else {
                 exit(argv.size() == 1 ? 0 : std::stoi(argv[1]));
             }
         }

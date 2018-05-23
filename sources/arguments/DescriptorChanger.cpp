@@ -7,8 +7,7 @@ namespace arguments {
         if (split_pos != std::string::npos) {   //changing descriptor
             if (split_pos == 0) {   //changing input
                 from = STDOUT_FILENO;
-            }
-            else {
+            } else {
                 try {
                     from = std::stoi(redirect.substr(0, split_pos));
                 }
@@ -16,13 +15,11 @@ namespace arguments {
                     throw ArgumentsError("Invalid arguments");
                 }
             }
-        }
-        else {
+        } else {
             split_pos = redirect.find('<');
             if (split_pos != std::string::npos) {  // changing input
                 from = STDIN_FILENO;
-            }
-            else {
+            } else {
                 throw ArgumentsError("Invalid arguments");
             }
         }

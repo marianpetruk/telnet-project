@@ -11,8 +11,7 @@ namespace myshell {
             if (argv.size() != 2) {
                 std::cerr << "Too many arguments" << std::endl;
                 return INVARG;
-            }
-            else {
+            } else {
                 syscalls::change_directory(argv[1]);
                 return EXECCP;
             }

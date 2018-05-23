@@ -2,7 +2,7 @@
 
 
 namespace myshell {
-    Mexport::Mexport(myshell::Interpreter &interpreter): interpreter(interpreter) {};
+    Mexport::Mexport(myshell::Interpreter &interpreter) : interpreter(interpreter) {};
 
     void Mexport::show_help() {
         std::cout << "Usage: mexport <variable> [-h|--help]" << std::endl;

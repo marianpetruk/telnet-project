@@ -21,13 +21,14 @@ namespace myshell {
     public:
         int MYERRNO = 0;
 
-        vm::VariablesMap& variablesMap;
+        vm::VariablesMap &variablesMap;
 
         explicit Interpreter(vm::VariablesMap &vm);
 
         void set_builtins(std::map<std::string, myshell::Executor *> builtins);
 
         void interpret(const std::vector<arguments::Arguments> &arguments);
+
         void interpret(const std::string &line);
     };
 }

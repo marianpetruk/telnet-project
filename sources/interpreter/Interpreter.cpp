@@ -2,14 +2,14 @@
 
 
 namespace myshell {
-    Interpreter::Interpreter(vm::VariablesMap &vm): variablesMap(vm) {};
+    Interpreter::Interpreter(vm::VariablesMap &vm) : variablesMap(vm) {};
 
     void Interpreter::set_builtins(const std::map<std::string, myshell::Executor *> new_builtins) {
         builtins = new_builtins;
     }
 
     void Interpreter::interpret(const std::vector<arguments::Arguments> &arguments) {
-        if (arguments.empty() || arguments[0].get_argv().empty() ||arguments[0].get_argv()[0].empty()) {
+        if (arguments.empty() || arguments[0].get_argv().empty() || arguments[0].get_argv()[0].empty()) {
             return;
         }
 
@@ -26,8 +26,7 @@ namespace myshell {
                 std::cerr << "Too many arguments for assigning value" << std::endl;
             }
             variablesMap.set(arguments[0].get_argv()[0].substr(0, pos), arguments[0].get_argv()[0].substr(pos + 1));
-        }
-        else {
+        } else {
             try {
                 MYERRNO = syscalls::execute(arguments, variablesMap.get_global());
             }
@@ -39,19 +38,19 @@ namespace myshell {
     }
 
     void Interpreter::interpret(const std::string &line) {
-    //     arguments::Arguments arguments{};
-	// 	std::vector<std::string> vct = get_args(line, variablesMap);
-	// 	for(auto e: vct){
-	// 		std::cout<<e<<std::endl;
-	// 	}
-    //     arguments.set_argv(vct);
-    //    arguments.add_redirect("<koko.txt");
-    //    arguments.add_redirect(">koko.txt");
-    //    arguments.add_redirect("2>&1");
-    //     interpret(arguments);
+        //     arguments::Arguments arguments{};
+        // 	std::vector<std::string> vct = get_args(line, variablesMap);
+        // 	for(auto e: vct){
+        // 		std::cout<<e<<std::endl;
+        // 	}
+        //     arguments.set_argv(vct);
+        //    arguments.add_redirect("<koko.txt");
+        //    arguments.add_redirect(">koko.txt");
+        //    arguments.add_redirect("2>&1");
+        //     interpret(arguments);
 
-	std::vector<arguments::Arguments> arguments_vect = get_args(line, variablesMap);
-	// TODO: Add | suppor, not only first
-    interpret(arguments_vect);
+        std::vector<arguments::Arguments> arguments_vect = get_args(line, variablesMap);
+        // TODO: Add | suppor, not only first
+        interpret(arguments_vect);
     }
 }

@@ -8,8 +8,8 @@
 #include <sys/wait.h>
 
 namespace server {
-    bool start_shell(const std::string& filename, const std::string& username,
-                     int socket_fd, int& shell_fd, int& shell_id);
+    bool start_shell(const std::string &filename, const std::string &username,
+                     int socket_fd, int &shell_fd, int &shell_id);
 }
 
 #endif //ECHOSERVER_START_SHELL_H

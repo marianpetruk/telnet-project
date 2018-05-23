@@ -38,7 +38,7 @@ namespace server {
 
     void Session::process_login(std::size_t length) {
         std::string input(asio::buffers_begin(streambf.data()),
-                             asio::buffers_begin(streambf.data()) + length - Session::delim.size());
+                          asio::buffers_begin(streambf.data()) + length - Session::delim.size());
         streambf.consume(length);
         auto pos = input.find('\n');
         database::User user(input.substr(0, pos), input.substr(pos + 1));
@@ -54,15 +54,14 @@ namespace server {
     void Session::start_reading() {
         auto self(shared_from_this());
         tcp_socket.async_read_some(boost::asio::buffer(data, Session::size),
-                                   [self, this] (boost::system::error_code ec, std::size_t length) {
-            if (!ec) {
-                read_handler(length);
-            }
-            else {
-                kill(bash_id, SIGKILL);
-                close(bash_fd);
-            }
-        });
+                                   [self, this](boost::system::error_code ec, std::size_t length) {
+                                       if (!ec) {
+                                           read_handler(length);
+                                       } else {
+                                           kill(bash_id, SIGKILL);
+                                           close(bash_fd);
+                                       }
+                                   });
     }
 
     void Session::read_handler(size_t length) {

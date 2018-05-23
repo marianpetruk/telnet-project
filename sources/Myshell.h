@@ -13,10 +13,12 @@
 
 
 namespace myshell {
-    class Myshell: public Executor {
+    class Myshell : public Executor {
     protected:
         void show_help() override;
+
         int execute_command(const std::vector<std::string> &argv) override;
+
     public:
         void run(int argc, char *argv[]);
     };

@@ -60,7 +60,7 @@ void resolve_handler(const boost::system::error_code &ec,
         tcp_socket.async_connect(*it, login);
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: shelluser <host> <port>" << std::endl;
         return -1;

@@ -40,6 +40,7 @@ namespace server {
         void process_login(std::size_t length);
 
         void start_reading();
+
         void read_handler(size_t length);
     };
 }

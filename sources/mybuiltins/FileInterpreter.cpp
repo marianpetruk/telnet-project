@@ -2,7 +2,7 @@
 
 
 namespace myshell {
-    FileInterpreter::FileInterpreter(Interpreter &interpreter): interpreter(interpreter) {};
+    FileInterpreter::FileInterpreter(Interpreter &interpreter) : interpreter(interpreter) {};
 
     void FileInterpreter::show_help() {
         std::cout << "Usage: . <filename> [-h|--help]" << std::endl;
@@ -12,8 +12,7 @@ namespace myshell {
         if (argv.size() != 2) {
             std::cerr << "Invalid number of arguments" << std::endl;
             return INVARG;
-        }
-        else {
+        } else {
             std::string line;
             std::ifstream file(argv[1]);
             if (file.is_open()) {

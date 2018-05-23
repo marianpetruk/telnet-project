@@ -4,7 +4,7 @@
 #include "server/Server.h"
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: shellserver <port>" << std::endl;
         return -1;

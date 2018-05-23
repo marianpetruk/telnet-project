@@ -3,7 +3,7 @@
 
 namespace server {
     namespace database {
-        UsersMap::UsersMap(const std::string& filename) : fn(filename) {
+        UsersMap::UsersMap(const std::string &filename) : fn(filename) {
             std::string n;
             std::string p;
             std::ifstream infile(filename);
@@ -13,10 +13,10 @@ namespace server {
             infile.close();
         }
 
-        bool UsersMap::validate(const User& user) {
+        bool UsersMap::validate(const User &user) {
             if (users_map.find(user.name) == users_map.end()) {
                 //std::cout << "You are not signed up" << std::endl;
-            return false;
+                return false;
             } else {
                 return users_map[user.name] == user.password;
             }
@@ -31,12 +31,12 @@ namespace server {
             outfile.close();
         }
 
-        bool UsersMap::add_user(const User& user) {
+        bool UsersMap::add_user(const User &user) {
             this->users_map[user.name] = user.password;
             write_db();
         }
 
-        bool UsersMap::remove_user(const User& user) {
+        bool UsersMap::remove_user(const User &user) {
             users_map.erase(user.name);
             write_db();
         }

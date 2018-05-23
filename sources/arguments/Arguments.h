@@ -32,7 +32,7 @@ namespace arguments {
 
         void set_fone(bool fone_execution);
 
-		void print_info();
+        void print_info();
     };
 }
 

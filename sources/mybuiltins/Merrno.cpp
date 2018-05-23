@@ -2,7 +2,7 @@
 
 
 namespace myshell {
-    Merrno::Merrno(Interpreter &interpreter): interpreter(interpreter) {};
+    Merrno::Merrno(Interpreter &interpreter) : interpreter(interpreter) {};
 
     void Merrno::show_help() {
         std::cout << "Usage: merrno [-h|--help]" << std::endl;

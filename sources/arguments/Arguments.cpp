@@ -34,14 +34,14 @@ namespace arguments {
         fone = fone_execution;
     }
 
-	void Arguments::print_info(){
-		std::cout<<"---ARGUMENTS INFO---"<<std::endl;
-		std::cout<<"Arguments:"<<std::endl;
-		for(auto e: argv){
-			std::cout<<e<<std::endl;
-		}
-		std::cout<<"Redirects size: "<<redirects.size()<<std::endl;
-		std::cout<<"Is fone: "<<fone<<std::endl;
-		std::cout<<"--------------------"<<std::endl;
-	}
+    void Arguments::print_info() {
+        std::cout << "---ARGUMENTS INFO---" << std::endl;
+        std::cout << "Arguments:" << std::endl;
+        for (auto e: argv) {
+            std::cout << e << std::endl;
+        }
+        std::cout << "Redirects size: " << redirects.size() << std::endl;
+        std::cout << "Is fone: " << fone << std::endl;
+        std::cout << "--------------------" << std::endl;
+    }
 }

@@ -14,6 +14,7 @@ namespace myshell {
     class Executor {
     protected:
         virtual void show_help() = 0;
+
         virtual int execute_command(const std::vector<std::string> &argv) = 0;
 
     public:

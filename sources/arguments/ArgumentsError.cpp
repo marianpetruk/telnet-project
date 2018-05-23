@@ -2,9 +2,9 @@
 
 
 namespace arguments {
-    ArgumentsError::ArgumentsError(const std::string &text): text(text) {}
+    ArgumentsError::ArgumentsError(const std::string &text) : text(text) {}
 
-    const char* ArgumentsError::what() const throw() {
+    const char *ArgumentsError::what() const throw() {
         return text.c_str();
     }
 }

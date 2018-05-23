@@ -2,15 +2,14 @@
 
 
 namespace server {
-    bool start_shell(const std::string &filename, const std::string& username,
-                     int socket_fd, int& shell_fd, int& shell_id) {
+    bool start_shell(const std::string &filename, const std::string &username,
+                     int socket_fd, int &shell_fd, int &shell_id) {
         int pipe_fd[2];
         pipe(pipe_fd);
         int pid = fork();
         if (pid < 0) {
             return false;
-        }
-        else if (pid == 0) {
+        } else if (pid == 0) {
 //        dup2(tcp_socket.native_handle(), STDIN_FILENO);
             dup2(pipe_fd[0], STDIN_FILENO);
             dup2(socket_fd, STDOUT_FILENO);

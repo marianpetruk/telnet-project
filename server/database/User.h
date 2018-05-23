@@ -7,10 +7,11 @@
 namespace server {
     namespace database {
         class User {
-            public:
-        std::string name;
-        std::string password;
-        User (std::string, std::string);
+        public:
+            std::string name;
+            std::string password;
+
+            User(std::string, std::string);
         };
     }
 }
