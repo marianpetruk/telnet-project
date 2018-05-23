@@ -1,4 +1,5 @@
 #include "Session.h"
+#include "database/User.h"
 
 
 namespace asio = boost::asio;
@@ -9,11 +10,10 @@ namespace server {
     const size_t Session::size;
     std::string Session::delim = "</bbp>";
 
-    Session::Session(asio::io_service &io_service) : tcp_socket(io_service) {}
+    Session::Session(asio::io_service &io_service, database::UsersMap &users_map) :
+            tcp_socket(io_service), users_map(users_map) {}
 
     Session::~Session() {
-        kill(bash_id, SIGKILL);
-        close(bash_fd);
         std::cout << "Closed session with socket: " << tcp_socket.native_handle() << std::endl;
     }
 
@@ -35,13 +35,19 @@ namespace server {
                 });
     }
 
+
     void Session::process_login(std::size_t length) {
-        std::string username(asio::buffers_begin(streambf.data()),
+        std::string input(asio::buffers_begin(streambf.data()),
                              asio::buffers_begin(streambf.data()) + length - Session::delim.size());
         streambf.consume(length);
+        auto pos = input.find('\n');
+        database::User user(input.substr(0, pos), input.substr(pos + 1));
 
-        if (start_shell("./myshell", username, tcp_socket.native_handle(), bash_fd, bash_id)) {
-            start_reading();
+        if (users_map.validate(user)) {
+            std::cout << user.name << " logged in" << std::endl;
+            if (start_shell("./myshell", user.name, tcp_socket.native_handle(), bash_fd, bash_id)) {
+                start_reading();
+            }
         }
     }
 
@@ -51,6 +57,10 @@ namespace server {
                                    [self, this] (boost::system::error_code ec, std::size_t length) {
             if (!ec) {
                 read_handler(length);
+            }
+            else {
+                kill(bash_id, SIGKILL);
+                close(bash_fd);
             }
         });
     }

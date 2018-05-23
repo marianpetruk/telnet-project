@@ -6,11 +6,13 @@
 #include "boost/bind.hpp"
 
 #include "Session.h"
+#include "database/UserMap.h"
 
 namespace server {
     class Server {
     public:
         boost::asio::ip::tcp::acceptor tcp_acceptor;
+        database::UsersMap user_map;
 
         Server(boost::asio::io_service &io_service, unsigned short port);
 

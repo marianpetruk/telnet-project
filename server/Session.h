@@ -10,12 +10,13 @@
 #include <sys/wait.h>
 
 #include "start_shell.h"
+#include "database/UserMap.h"
 
 
 namespace server {
     class Session : public std::enable_shared_from_this<Session> {
     public:
-        Session(boost::asio::io_service &io_service);
+        Session(boost::asio::io_service &io_service, database::UsersMap &users_map);
 
         ~Session();
 
@@ -24,6 +25,8 @@ namespace server {
         boost::asio::ip::tcp::socket &get_socket();
 
     private:
+        database::UsersMap users_map;
+
         int bash_fd, bash_id;
         static std::string delim;
 

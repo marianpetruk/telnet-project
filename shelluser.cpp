@@ -46,10 +46,11 @@ void login_handler(const boost::system::error_code &ec,
 void login(const boost::system::error_code &ec) {
     if (!ec) {
         std::cout << "Enter username: ";
-        std::string r;
-        std::getline(std::cin, r);
-        r += delim;
-        async_write(tcp_socket, buffer(r), login_handler);
+        std::string result;
+        std::getline(std::cin, result);                    // username
+        std::string password(getpass("Enter password: ")); // password
+        result += "\n" + password + delim;
+        async_write(tcp_socket, buffer(result), login_handler);
     }
 }
 
