@@ -23,13 +23,13 @@ namespace myshell{
             // CREATE INTERPRETER
             myshell::Interpreter interpreter(variablesMap);
             const std::map<std::string, myshell::Executor *> builtins = {
-                    {"merrno",  new myshell::Merrno(interpreter)},
-                    {"mpwd",    new myshell::Mpwd()},
-                    {"mcd",     new myshell::Mcd()},
-                    {"mexit",   new myshell::Mexit()},
+                    {"errno",  new myshell::Merrno(interpreter)},
+                    {"pwd",    new myshell::Mpwd()},
+                    {"cd",     new myshell::Mcd()},
+                    {"exit",   new myshell::Mexit()},
                     {".",       new myshell::FileInterpreter(interpreter)},
-                    {"mecho",   new myshell::Mecho()},
-                    {"mexport", new myshell::Mexport(interpreter)}
+                    {"echo",   new myshell::Mecho()},
+                    {"export", new myshell::Mexport(interpreter)}
             };
             interpreter.set_builtins(builtins);
             if (argv.size() == 2) {
